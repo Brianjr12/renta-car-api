@@ -16,9 +16,10 @@ class Car extends Model
      */
     protected $fillable = [
         'model',
-        'brand',
+        'brand_id',
         'year',
         'price_per_day',
+        'color',
         'description',
         'availability',
         'popularity',
@@ -46,4 +47,10 @@ class Car extends Model
     {
         return $this->belongsToMany(User::class, 'favorites');
     }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
+
 }
