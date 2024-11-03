@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\CarController;
+use App\Http\Controllers\Api\GetCarController;
 use App\Http\Controllers\Api\BookingController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\AdminController;
@@ -24,8 +25,9 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::prefix('cars')->group(function () {
+    Route::get('/getCars', [GetCarController::class, 'index']);
+    Route::get('/{id}', [CarController::class, 'carById']);
     Route::get('/', [CarController::class, 'index']);
-    Route::get('{id}', [CarController::class, 'show']);
     Route::post('/', [CarController::class, 'store'])->middleware('auth:sanctum', 'isAdmin');
     Route::put('{id}', [CarController::class, 'update'])->middleware('auth:sanctum', 'isAdmin');
     Route::delete('{id}', [CarController::class, 'destroy'])->middleware('auth:sanctum', 'isAdmin');
