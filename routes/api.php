@@ -14,6 +14,7 @@ Route::prefix('auth')->group(function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
     Route::post('reset-password', [AuthController::class, 'resetPassword']);
+    Route::post('reset-password-confirm', [AuthController::class, 'resetPasswordConfirm']);
     Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 });
 
@@ -25,10 +26,10 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::prefix('cars')->group(function () {
-    Route::get('/getCars', [GetCarController::class, 'index']);
-    Route::get('/{id}', [CarController::class, 'carById']);
     Route::get('/', [CarController::class, 'index']);
-    Route::post('/', [CarController::class, 'store'])->middleware('auth:sanctum', 'isAdmin');
+    Route::get('/{id}', [CarController::class, 'carById']);
+    Route::get('/getCars', [GetCarController::class, 'index'])->middleware('auth:sanctum', 'isAdmin');
+    Route::post('/', [CarController::class, 'createCar'])->middleware('auth:sanctum', 'isAdmin');
     Route::put('{id}', [CarController::class, 'update'])->middleware('auth:sanctum', 'isAdmin');
     Route::delete('{id}', [CarController::class, 'destroy'])->middleware('auth:sanctum', 'isAdmin');
 });
@@ -56,7 +57,9 @@ Route::middleware('auth:sanctum', 'isAdmin')->prefix('admin')->group(function ()
     Route::get('cars', [AdminController::class, 'manageCars']);
 });
 
-Route::get('faqs', [FaqController::class, 'index']);
-Route::post('faqs', [FaqController::class, 'store'])->middleware('auth:sanctum', 'isAdmin');
-Route::put('faqs/{id}', [FaqController::class, 'update'])->middleware('auth:sanctum', 'isAdmin');
-Route::delete('faqs/{id}', [FaqController::class, 'destroy'])->middleware('auth:sanctum', 'isAdmin');
+Route::prefix('faqs')->group(function () {
+    Route::get('faqs', [FaqController::class, 'index']);
+    Route::post('faqs', [FaqController::class, 'store'])->middleware('auth:sanctum', 'isAdmin');
+    Route::put('faqs/{id}', [FaqController::class, 'update'])->middleware('auth:sanctum', 'isAdmin');
+    Route::delete('faqs/{id}', [FaqController::class, 'destroy'])->middleware('auth:sanctum', 'isAdmin');
+});
